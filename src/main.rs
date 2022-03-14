@@ -22,27 +22,27 @@ const TAKEAWAY_FEE: u32 = 1;
 
 #[derive(Debug, Clone)]
 struct Order {
-    chicken_count : u32,
-    tofu_count : u32,
-    rice_count : u32,
-    takeaway : bool,
+    chicken_count: u32,
+    tofu_count: u32,
+    rice_count: u32,
+    takeaway: bool,
 }
 
 impl Order {
     fn new() -> Order {
         Order {
-            chicken_count : 0,
-            tofu_count : 0,
-            rice_count : 0,
-            takeaway : false,
+            chicken_count: 0,
+            tofu_count: 0,
+            rice_count: 0,
+            takeaway: false,
         }
     }
 
     fn add_dish(&mut self, dish: Dish) {
         match dish {
-            Dish::ThaiChicken => {self.chicken_count += 1},
-            Dish::Tofu => {self.tofu_count += 1},
-            Dish::FriedRice => {self.rice_count += 1},
+            Dish::ThaiChicken => self.chicken_count += 1,
+            Dish::Tofu => self.tofu_count += 1,
+            Dish::FriedRice => self.rice_count += 1,
         }
     }
 
@@ -67,9 +67,9 @@ impl Order {
     }
 
     fn total(&self) -> u32 {
-        let sum = self.chicken_count * Dish::price(&Dish::ThaiChicken) +
-        self.rice_count * Dish::price(&Dish::FriedRice) +
-        self.tofu_count * Dish::price(&Dish::Tofu);
+        let sum = self.chicken_count * Dish::price(&Dish::ThaiChicken)
+            + self.rice_count * Dish::price(&Dish::FriedRice)
+            + self.tofu_count * Dish::price(&Dish::Tofu);
 
         if self.is_takeaway() {
             sum + self.items_count() * TAKEAWAY_FEE
@@ -105,13 +105,16 @@ struct VanBinh {
 impl VanBinh {
     pub fn new() -> VanBinh {
         VanBinh {
-            orders_count : 1,
-            customers : Vec::new(),
+            orders_count: 1,
+            customers: Vec::new(),
         }
     }
 
     fn add_customer(&mut self, name: String, favorite_order: Order) {
-        let new_customer = Customer {name, favorite_order};
+        let new_customer = Customer {
+            name,
+            favorite_order,
+        };
         self.customers.push(new_customer);
     }
 
@@ -194,16 +197,14 @@ fn main() {
 
         if order.items_count() == 0 {
             println!("Your order is empty!");
-        }
-        else {
-
-        println!("This is order no. {}", van_binh.get_orders_count());
-        println!(
-            "There you go: {}, it's going to be {} zł",
-            order,
-            order.total()
-        );
-        van_binh.increase_orders_count();
+        } else {
+            println!("This is order no. {}", van_binh.get_orders_count());
+            println!(
+                "There you go: {}, it's going to be {} zł",
+                order,
+                order.total()
+            );
+            van_binh.increase_orders_count();
         }
     }
     println!("Bye!");
